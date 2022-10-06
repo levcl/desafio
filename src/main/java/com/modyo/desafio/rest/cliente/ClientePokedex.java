@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import com.modyo.desafio.rest.response.DetallePokemonTO;
@@ -14,15 +17,16 @@ import com.modyo.desafio.rest.to.PokemonTO;
 public class ClientePokedex {
 
     private static RestTemplate restTemplate = new RestTemplate();
+    private static HttpHeaders headers = new HttpHeaders();
     
     public static ListadoPokedexTO getListaPokemones() {
         ListadoPokedexTO resultado = new ListadoPokedexTO();
         List<PokemonTO> listaPokemones = new ArrayList<>();
         
-        String url = "https://pokeapi.co/api/v2/pokemon/";
-         //Object forObject = restTemplate.getForObject(url, Object.class);
-        String resp = restTemplate.getForObject(url, String.class);
-        JSONObject respuesta = new JSONObject(resp);
+        String endpoint = "https://pokeapi.co/api/v2/pokemon/";
+        headers.add("user-agent", "Application");
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+        JSONObject respuesta = new JSONObject(restTemplate.exchange(endpoint, HttpMethod.GET, entity,String.class).getBody());
         System.out.println(respuesta);
         if(respuesta.has("results")){
             JSONArray resultados = respuesta.getJSONArray("results");
@@ -37,8 +41,10 @@ public class ClientePokedex {
     }
         
     public static DetallePokemonTO getDetallePokemon(String nombre) {
-        String urlPokemon = "https://pokeapi.co/api/v2/pokemon/"+nombre;
-        JSONObject pokemonJson = new JSONObject(restTemplate.getForObject(urlPokemon, String.class));
+        String endpoint = "https://pokeapi.co/api/v2/pokemon/"+nombre;
+        headers.add("user-agent", "Application");
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+        JSONObject pokemonJson = new JSONObject(restTemplate.exchange(endpoint, HttpMethod.GET, entity,String.class).getBody());
         int id = pokemonJson.getInt("id");
         int peso = pokemonJson.getInt("weight");
         return new DetallePokemonTO(nombre, peso, getTipos(pokemonJson),getHabilidades(pokemonJson), 
@@ -85,8 +91,10 @@ public class ClientePokedex {
     }
     private static String getDescripcion(int id){
         String descripcion = "";
-        String urlCaracteristicas = "https://pokeapi.co/api/v2/characteristic/"+id+"/";
-        JSONObject pokemonCaracteristicas = new JSONObject(restTemplate.getForObject(urlCaracteristicas, String.class));
+        String endpoint = "https://pokeapi.co/api/v2/characteristic/"+id+"/";
+        headers.add("user-agent", "Application");
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+        JSONObject pokemonCaracteristicas = new JSONObject(restTemplate.exchange(endpoint, HttpMethod.GET, entity,String.class).getBody());
         if(pokemonCaracteristicas.has("descriptions")){
             JSONArray descripciones = pokemonCaracteristicas.getJSONArray("descriptions");
             for (int j = 0; j < descripciones.length(); j++){
