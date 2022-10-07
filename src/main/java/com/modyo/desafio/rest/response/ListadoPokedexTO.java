@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ListadoPokedexTO {
-    private int pagina;
-	private List<PokemonTO> listaPokemones;
+    private int total;
+    private String anterior;
+    private String siguiente;
+    private List<PokemonTO> listaPokemones;
    
 }
