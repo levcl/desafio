@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 public class PokedexController {
     
     //TODO: definir parametros para paginación
-    @ApiOperation(value = "Permite obtener el listado paginado de pokemones de la pokedex")
+    @ApiOperation(value = "Permite obtener el listado paginado de pokemones de la pokedex.")
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, path ="/pokedex")
     @ResponseStatus(code = HttpStatus.OK)
     public ListadoPokedexTO pokedex() {
@@ -28,7 +28,7 @@ public class PokedexController {
         return resultado;
     }
     
-    @ApiOperation(value = "Permite obtener información de un pokemon")
+    @ApiOperation(value = "Permite obtener información de un pokemon mediante su nombre.")
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, path ="/pokemon/{nombre}")
     @ResponseStatus(code = HttpStatus.OK)
     public DetallePokemonTO pokemon(@PathVariable("nombre") String nombre) {

@@ -51,12 +51,17 @@ public class ClientePokedex {
         String endpoint = "https://pokeapi.co/api/v2/pokemon/"+nombre;
         headers.add("user-agent", "Application");
 		HttpEntity<String> entity = new HttpEntity<>(headers);
-        JSONObject pokemonJson = new JSONObject(restTemplate.exchange(endpoint, HttpMethod.GET, entity,String.class).getBody());
-        int id = pokemonJson.getInt("id");
-        int peso = pokemonJson.getInt("weight");
-        return new DetallePokemonTO(nombre, peso, getTipos(pokemonJson),getHabilidades(pokemonJson), 
+        //TODO: Implementar controlador de errores para llamadas restTemplate
+        try{
+            JSONObject pokemonJson = new JSONObject(restTemplate.exchange(endpoint, HttpMethod.GET, entity,String.class).getBody());
+            int id = pokemonJson.getInt("id");
+            int peso = pokemonJson.getInt("weight");
+            return new DetallePokemonTO(nombre, peso, getTipos(pokemonJson),getHabilidades(pokemonJson), 
             getDescripcion(id), getEvoluciones(id));
-            
+        }catch(Exception e){
+            return new DetallePokemonTO("Sin información", 0, null ,null, 
+            null, null);
+        }
     }
 
     private static PokemonTO getPokemon(String url){
