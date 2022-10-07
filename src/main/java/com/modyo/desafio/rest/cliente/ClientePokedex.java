@@ -65,7 +65,9 @@ public class ClientePokedex {
     }
 
     private static PokemonTO getPokemon(String url){
-        JSONObject pokemonJson = new JSONObject(restTemplate.getForObject(url, String.class));
+        headers.add("user-agent", "Application");
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+        JSONObject pokemonJson = new JSONObject(restTemplate.exchange(url, HttpMethod.GET, entity,String.class).getBody());
         String nombre = pokemonJson.getString("name");
         int peso = pokemonJson.getInt("weight");
         //TODO: Obtener foto
