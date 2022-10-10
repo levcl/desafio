@@ -7,7 +7,7 @@
 ### Información
 ***
 Proyecto de presentación para resolver el desafío planteado por Modyo.  Basicamente es una API Rest que obtiene información de https://pokeapi.co/  según requerimientos.  
-Se despliega en Heroku y utiliza Swagger para el despliegue y pruebas.
+Se despliega en Heroku y utiliza Swagger para el visualización y pruebas.
 
 ## Tecnologías
 ***
